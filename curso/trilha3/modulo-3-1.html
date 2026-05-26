@@ -296,6 +296,92 @@ Output: write findings to
       </div>
       <p class="text-neutral-300 mb-6 leading-relaxed">O <code>/understand</code> é orquestrado em <strong class="text-purple-400">6+ fases sequenciais</strong>. Cada uma lê e escreve arquivos em <code>intermediate/</code>. Saber onde seu agente entra define o que ele recebe e o que pode produzir.</p>
 
+      <!-- SVG: extractor de Rust + custom agent plugando no pipeline -->
+      <figure class="bg-dark-800 rounded-xl border border-purple-500/30 p-5 mb-6">
+        <svg viewBox="0 0 800 360" role="img" aria-labelledby="svg31-title svg31-desc" class="w-full h-auto" style="color:#c084fc">
+          <title id="svg31-title">Extractor de Rust e custom agent plugados no pipeline</title>
+          <desc id="svg31-desc">Diagrama mostrando uma nova gramática tree-sitter (Rust) registrada no PluginRegistry alimentando o file-analyzer, e um custom agent lendo e gravando JSON em .understand-anything/intermediate.</desc>
+          <defs>
+            <marker id="arrow31" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#c084fc" />
+            </marker>
+          </defs>
+
+          <!-- Track: pipeline lane -->
+          <text x="20" y="30" font-family="ui-sans-serif, system-ui" font-size="13" fill="#9ca3af">Pipeline /understand</text>
+          <rect x="20" y="45" width="760" height="80" rx="10" fill="#1f1230" stroke="#6b7280" stroke-dasharray="4 4"/>
+
+          <!-- Phase nodes -->
+          <g font-family="ui-sans-serif, system-ui" font-size="12" fill="currentColor">
+            <rect x="35" y="65" width="120" height="40" rx="8" fill="#581c87" stroke="#c084fc"/>
+            <text x="95" y="89" text-anchor="middle" fill="#f5f3ff">project-scanner</text>
+
+            <rect x="180" y="65" width="120" height="40" rx="8" fill="#581c87" stroke="#c084fc"/>
+            <text x="240" y="89" text-anchor="middle" fill="#f5f3ff">compute-batches</text>
+
+            <rect x="325" y="65" width="120" height="40" rx="8" fill="#581c87" stroke="#c084fc"/>
+            <text x="385" y="89" text-anchor="middle" fill="#f5f3ff">file-analyzer</text>
+
+            <rect x="470" y="65" width="120" height="40" rx="8" fill="#581c87" stroke="#c084fc"/>
+            <text x="530" y="89" text-anchor="middle" fill="#f5f3ff">merge + arch</text>
+
+            <rect x="615" y="65" width="140" height="40" rx="8" fill="#581c87" stroke="#c084fc"/>
+            <text x="685" y="89" text-anchor="middle" fill="#f5f3ff">tour + reviewer</text>
+          </g>
+
+          <!-- Arrows between phases -->
+          <g stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arrow31)">
+            <line x1="155" y1="85" x2="180" y2="85"/>
+            <line x1="300" y1="85" x2="325" y2="85"/>
+            <line x1="445" y1="85" x2="470" y2="85"/>
+            <line x1="590" y1="85" x2="615" y2="85"/>
+          </g>
+
+          <!-- Insertion point: Rust extractor (plugs into file-analyzer) -->
+          <g font-family="ui-sans-serif, system-ui" font-size="12">
+            <rect x="305" y="170" width="160" height="62" rx="8" fill="#2d1244" stroke="#c084fc"/>
+            <text x="385" y="190" text-anchor="middle" fill="#f5f3ff" font-weight="600">tree-sitter-rust</text>
+            <text x="385" y="207" text-anchor="middle" fill="#c084fc" font-size="11">grammar.wasm</text>
+            <text x="385" y="222" text-anchor="middle" fill="#9ca3af" font-size="10">PluginRegistry.register()</text>
+          </g>
+          <g stroke="#c084fc" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#arrow31)">
+            <line x1="385" y1="170" x2="385" y2="110"/>
+          </g>
+          <text x="395" y="148" font-family="ui-sans-serif, system-ui" font-size="10" fill="#c084fc">ponto de inserção #1</text>
+
+          <!-- Custom agent block (plugs between Phase 3 and Phase 4) -->
+          <g font-family="ui-sans-serif, system-ui" font-size="12">
+            <rect x="490" y="170" width="180" height="80" rx="8" fill="#2d1244" stroke="#c084fc"/>
+            <text x="580" y="190" text-anchor="middle" fill="#f5f3ff" font-weight="600">security-analyzer.md</text>
+            <text x="580" y="208" text-anchor="middle" fill="#c084fc" font-size="11">custom agent</text>
+            <text x="580" y="225" text-anchor="middle" fill="#9ca3af" font-size="10">lê assembled-graph.json</text>
+            <text x="580" y="240" text-anchor="middle" fill="#9ca3af" font-size="10">escreve security-report.json</text>
+          </g>
+          <g stroke="#c084fc" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#arrow31)">
+            <line x1="580" y1="170" x2="580" y2="110"/>
+          </g>
+          <text x="590" y="148" font-family="ui-sans-serif, system-ui" font-size="10" fill="#c084fc">ponto de inserção #2</text>
+
+          <!-- intermediate/ shared filesystem -->
+          <g font-family="ui-sans-serif, system-ui" font-size="12">
+            <rect x="35" y="280" width="720" height="60" rx="10" fill="#0f172a" stroke="#6b7280"/>
+            <text x="55" y="305" fill="#9ca3af" font-size="11">.understand-anything/intermediate/</text>
+            <text x="55" y="325" fill="currentColor" font-size="11">scan-result.json · batches.json · batch-i-part-k.json · assembled-graph.json · security-report.json</text>
+          </g>
+          <g stroke="#6b7280" stroke-width="1" stroke-dasharray="2 3" fill="none">
+            <line x1="95" y1="125" x2="95" y2="280"/>
+            <line x1="240" y1="125" x2="240" y2="280"/>
+            <line x1="385" y1="232" x2="385" y2="280"/>
+            <line x1="530" y1="125" x2="530" y2="280"/>
+            <line x1="580" y1="250" x2="580" y2="280"/>
+            <line x1="685" y1="125" x2="685" y2="280"/>
+          </g>
+        </svg>
+        <figcaption class="mt-3 text-sm text-neutral-400">
+          <span class="text-purple-400 font-semibold">Pontos de inserção do pipeline:</span> uma nova gramática (ex.: <code>tree-sitter-rust</code>) entra via <code>PluginRegistry</code> e é consumida pelo <code>file-analyzer</code>. Um agente customizado pluga depois do merge, lendo <code>assembled-graph.json</code> e gravando JSON enriquecido em <code>intermediate/</code>.
+        </figcaption>
+      </figure>
+
       <div class="space-y-4 mb-6">
         <div class="flex items-start space-x-4">
           <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>

@@ -106,6 +106,77 @@
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
+    <!-- GIF: dashboard em ação -->
+    <figure class="mb-10">
+      <div class="rounded-xl overflow-hidden border border-blue-500/30 bg-dark-800">
+        <img src="../assets/overview-structural.gif" loading="lazy"
+             alt="Animação do dashboard mostrando o grafo estrutural sendo navegado: pan, zoom, seleção de nós e sidebar reagindo"
+             class="w-full h-auto block">
+      </div>
+      <figcaption class="text-center text-sm text-neutral-400 mt-3">
+        O dashboard em ação: navegação no grafo estrutural, seleção de nós e a sidebar reagindo em tempo real. É exatamente o que você vai destrinchar abaixo.
+      </figcaption>
+    </figure>
+
+    <!-- DIAGRAMA: wireframe do dashboard -->
+    <figure class="mb-12 bg-dark-800 rounded-xl border border-dark-600 p-6">
+      <svg viewBox="0 0 800 460" role="img" aria-label="Wireframe do dashboard: área de grafo ocupando 75 por cento à esquerda, sidebar de 360 pixels à direita com abas Info e Files, e painel de code viewer que sobe pela base"
+           xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;color:#60a5fa;font-family:ui-sans-serif,system-ui">
+        <text x="400" y="28" text-anchor="middle" fill="currentColor" font-size="16" font-weight="700">Layout do dashboard</text>
+        <text x="400" y="48" text-anchor="middle" fill="#6b7280" font-size="11">75% grafo + sidebar 360px · viewer sobe pela base</text>
+        <!-- frame -->
+        <rect x="20" y="70" width="760" height="340" rx="10" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+        <!-- area de grafo (75%) -->
+        <rect x="30" y="80" width="510" height="260" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="285" y="110" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">Graph canvas (React Flow)</text>
+        <!-- nós ilustrativos -->
+        <g fill="#1e3a8a" stroke="currentColor" stroke-width="1.5">
+          <circle cx="130" cy="180" r="18"/>
+          <circle cx="230" cy="240" r="16"/>
+          <circle cx="340" cy="180" r="20"/>
+          <circle cx="440" cy="250" r="14"/>
+          <circle cx="400" cy="290" r="12"/>
+        </g>
+        <g stroke="#6b7280" stroke-width="1.2" fill="none">
+          <line x1="148" y1="180" x2="214" y2="240"/>
+          <line x1="246" y1="240" x2="322" y2="184"/>
+          <line x1="358" y1="186" x2="430" y2="246"/>
+          <line x1="438" y1="262" x2="408" y2="282"/>
+        </g>
+        <text x="285" y="325" text-anchor="middle" fill="#6b7280" font-size="10">pan · zoom · seleção · layout pluggable</text>
+        <!-- sidebar 360px à direita -->
+        <rect x="550" y="80" width="220" height="260" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="660" y="105" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">Sidebar 360px</text>
+        <!-- tabs -->
+        <rect x="560" y="118" width="95" height="28" rx="4" fill="#1e3a8a" stroke="currentColor" stroke-width="1.5"/>
+        <text x="607" y="137" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Info</text>
+        <rect x="665" y="118" width="95" height="28" rx="4" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+        <text x="712" y="137" text-anchor="middle" fill="#6b7280" font-size="11">Files</text>
+        <!-- conteudo sidebar -->
+        <text x="570" y="170" fill="#bfdbfe" font-size="11" font-weight="600">NodeInfo</text>
+        <line x1="570" y1="178" x2="750" y2="178" stroke="#6b7280" stroke-width="1"/>
+        <text x="570" y="198" fill="#6b7280" font-size="10">name: dashboard.tsx</text>
+        <text x="570" y="214" fill="#6b7280" font-size="10">layer: UI</text>
+        <text x="570" y="230" fill="#6b7280" font-size="10">deps: 3 imports</text>
+        <text x="570" y="258" fill="#bfdbfe" font-size="11" font-weight="600">LearnPanel (persona Learn)</text>
+        <rect x="570" y="270" width="180" height="55" rx="4" fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="660" y="293" text-anchor="middle" fill="#6b7280" font-size="10">tour ativo · próximo stop</text>
+        <text x="660" y="310" text-anchor="middle" fill="#6b7280" font-size="10">explicação contextual</text>
+        <!-- code viewer slide-up -->
+        <rect x="30" y="350" width="510" height="50" rx="6" fill="#1e3a8a" stroke="currentColor" stroke-width="2"/>
+        <text x="285" y="372" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Code viewer (prism-react-renderer) ⬆</text>
+        <text x="285" y="390" text-anchor="middle" fill="#bfdbfe" font-size="10">slide-up ao clicar em file node · botão expande para modal full-screen</text>
+        <!-- seta indicando slide-up -->
+        <text x="285" y="345" text-anchor="middle" fill="#6b7280" font-size="10">▲ sobe pela base</text>
+        <!-- legenda dimensoes -->
+        <text x="285" y="440" text-anchor="middle" fill="#6b7280" font-size="10">≈ 75% da largura</text>
+        <text x="660" y="440" text-anchor="middle" fill="#6b7280" font-size="10">360px fixos</text>
+      </svg>
+      <figcaption class="text-center text-sm text-neutral-400 mt-3">
+        Wireframe do dashboard: canvas do grafo ocupa 75% da largura, sidebar de 360px com abas Info e Files, e o code viewer que sobe pela base ao clicar em um file node.
+      </figcaption>
+    </figure>
+
     <!-- TOPICO 1 -->
     <section id="topico-1" class="mb-16">
       <div class="flex items-center space-x-4 mb-6">

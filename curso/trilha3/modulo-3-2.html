@@ -97,6 +97,20 @@
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
+    <!-- DEMO VISUAL: grafo estrutural real -->
+    <section class="mb-12">
+      <figure class="bg-dark-800 rounded-xl border border-purple-500/30 overflow-hidden">
+        <img
+          src="../assets/overview-structural.gif"
+          alt="Grafo estrutural do Understand Anything: centenas de nós conectados representando arquivos, classes e funções, com layout ELK e containers por pasta."
+          loading="lazy"
+          class="w-full h-auto block" />
+        <figcaption class="px-5 py-3 text-sm text-neutral-400 border-t border-dark-600">
+          <span class="text-purple-400 font-semibold">Por que escalar importa:</span> este é um grafo estrutural real renderizado pelo dashboard. Cada nó passou pelo pipeline. Sem <code>.understandignore</code>, semantic batching e output chunking, a análise de 500 arquivos como este custaria <strong>~529k tokens</strong> e dropparia edges no caminho.
+        </figcaption>
+      </figure>
+    </section>
+
     <!-- TÓPICO 1 -->
     <section id="topico-1" class="mb-16">
       <div class="flex items-center space-x-4 mb-6">
@@ -228,6 +242,130 @@ Algoritmo:
         <p class="text-neutral-300">Pura algorítmica — sem LLM. Roda em milissegundos mesmo com 500 arquivos. Se quiser <strong>incremental</strong>, passe <code>--changed-files=...</code> para batchar só o que mudou.</p>
       </div>
     </section>
+
+    <!-- SVG: filtro .understandignore + semantic batching + chunking -->
+    <figure class="bg-dark-800 rounded-xl border border-purple-500/30 p-5 mb-12">
+      <svg viewBox="0 0 800 460" role="img" aria-labelledby="svg32-title svg32-desc" class="w-full h-auto" style="color:#c084fc">
+        <title id="svg32-title">.understandignore filtra, Louvain agrupa, chunking divide o output</title>
+        <desc id="svg32-desc">Diagrama em três faixas mostrando: paths sendo filtrados por .understandignore antes do pipeline, arquivos restantes agrupados em batches semânticos por Louvain, e cada batch sendo dividido em partes para caber no context window do LLM.</desc>
+        <defs>
+          <marker id="arrow32" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#c084fc" />
+          </marker>
+        </defs>
+
+        <!-- LANE 1: .understandignore filter -->
+        <text x="20" y="24" font-family="ui-sans-serif, system-ui" font-size="13" fill="#9ca3af">1. .understandignore filtra paths antes do pipeline</text>
+        <g font-family="ui-sans-serif, system-ui" font-size="11" fill="currentColor">
+          <!-- input files -->
+          <rect x="20" y="40" width="120" height="22" rx="4" fill="#581c87" stroke="#c084fc"/>
+          <text x="80" y="55" text-anchor="middle" fill="#f5f3ff">src/auth/*.ts</text>
+          <rect x="20" y="68" width="120" height="22" rx="4" fill="#581c87" stroke="#c084fc"/>
+          <text x="80" y="83" text-anchor="middle" fill="#f5f3ff">src/api/*.ts</text>
+          <rect x="20" y="96" width="120" height="22" rx="4" fill="#4b1a1a" stroke="#dc2626" stroke-dasharray="3 3"/>
+          <text x="80" y="111" text-anchor="middle" fill="#fca5a5">node_modules/</text>
+          <rect x="20" y="124" width="120" height="22" rx="4" fill="#4b1a1a" stroke="#dc2626" stroke-dasharray="3 3"/>
+          <text x="80" y="139" text-anchor="middle" fill="#fca5a5">dist/*.min.js</text>
+
+          <!-- filter box -->
+          <rect x="200" y="62" width="160" height="60" rx="8" fill="#2d1244" stroke="#c084fc"/>
+          <text x="280" y="82" text-anchor="middle" fill="#f5f3ff" font-weight="600">.understandignore</text>
+          <text x="280" y="100" text-anchor="middle" fill="#c084fc" font-size="10">gitignore-like patterns</text>
+          <text x="280" y="114" text-anchor="middle" fill="#9ca3af" font-size="10">! força inclusão</text>
+
+          <!-- output (filtered) -->
+          <rect x="420" y="40" width="120" height="22" rx="4" fill="#581c87" stroke="#c084fc"/>
+          <text x="480" y="55" text-anchor="middle" fill="#f5f3ff">src/auth/*.ts</text>
+          <rect x="420" y="68" width="120" height="22" rx="4" fill="#581c87" stroke="#c084fc"/>
+          <text x="480" y="83" text-anchor="middle" fill="#f5f3ff">src/api/*.ts</text>
+          <text x="480" y="115" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">vendor/dist descartados</text>
+        </g>
+        <g stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arrow32)">
+          <line x1="140" y1="80" x2="200" y2="92"/>
+          <line x1="360" y1="80" x2="420" y2="80"/>
+        </g>
+
+        <!-- LANE 2: semantic batching with Louvain -->
+        <text x="20" y="184" font-family="ui-sans-serif, system-ui" font-size="13" fill="#9ca3af">2. Louvain agrupa por comunidade (mantém módulo junto)</text>
+        <g font-family="ui-sans-serif, system-ui" font-size="11">
+          <!-- community 1: auth -->
+          <rect x="20" y="200" width="220" height="80" rx="10" fill="#2d1244" stroke="#c084fc"/>
+          <text x="35" y="218" fill="#c084fc" font-weight="600">batch 1 · auth community</text>
+          <circle cx="55" cy="245" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="95" cy="245" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="135" cy="245" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="75" cy="265" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="115" cy="265" r="10" fill="#581c87" stroke="#c084fc"/>
+          <line x1="55" y1="245" x2="95" y2="245" stroke="#c084fc"/>
+          <line x1="95" y1="245" x2="135" y2="245" stroke="#c084fc"/>
+          <line x1="75" y1="265" x2="115" y2="265" stroke="#c084fc"/>
+          <line x1="95" y1="245" x2="75" y2="265" stroke="#c084fc"/>
+          <text x="170" y="248" fill="currentColor" font-size="10">login.ts</text>
+          <text x="170" y="262" fill="currentColor" font-size="10">session.ts</text>
+          <text x="170" y="276" fill="currentColor" font-size="10">jwt.ts</text>
+
+          <!-- community 2: api -->
+          <rect x="260" y="200" width="220" height="80" rx="10" fill="#2d1244" stroke="#c084fc"/>
+          <text x="275" y="218" fill="#c084fc" font-weight="600">batch 2 · api community</text>
+          <circle cx="295" cy="245" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="335" cy="245" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="375" cy="245" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="315" cy="265" r="10" fill="#581c87" stroke="#c084fc"/>
+          <line x1="295" y1="245" x2="335" y2="245" stroke="#c084fc"/>
+          <line x1="335" y1="245" x2="375" y2="245" stroke="#c084fc"/>
+          <line x1="295" y1="245" x2="315" y2="265" stroke="#c084fc"/>
+          <text x="405" y="248" fill="currentColor" font-size="10">routes.ts</text>
+          <text x="405" y="262" fill="currentColor" font-size="10">handlers.ts</text>
+
+          <!-- community 3 -->
+          <rect x="500" y="200" width="280" height="80" rx="10" fill="#2d1244" stroke="#c084fc"/>
+          <text x="515" y="218" fill="#c084fc" font-weight="600">batch 3 · store community</text>
+          <circle cx="535" cy="250" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="575" cy="250" r="10" fill="#581c87" stroke="#c084fc"/>
+          <circle cx="615" cy="250" r="10" fill="#581c87" stroke="#c084fc"/>
+          <line x1="535" y1="250" x2="575" y2="250" stroke="#c084fc"/>
+          <line x1="575" y1="250" x2="615" y2="250" stroke="#c084fc"/>
+          <text x="645" y="253" fill="currentColor" font-size="10">orderSlice.ts</text>
+          <text x="645" y="267" fill="currentColor" font-size="10">cartSlice.ts</text>
+        </g>
+
+        <!-- LANE 3: chunking -->
+        <text x="20" y="316" font-family="ui-sans-serif, system-ui" font-size="13" fill="#9ca3af">3. Output chunking: sem (overflow) vs com (cabe no budget)</text>
+
+        <!-- without chunking -->
+        <g font-family="ui-sans-serif, system-ui" font-size="11">
+          <text x="30" y="340" fill="#fca5a5" font-weight="600">sem chunking</text>
+          <rect x="30" y="350" width="340" height="40" rx="6" fill="#4b1a1a" stroke="#dc2626"/>
+          <rect x="30" y="350" width="340" height="40" rx="6" fill="url(#none)" stroke="#dc2626" stroke-dasharray="4 3"/>
+          <text x="200" y="375" text-anchor="middle" fill="#fca5a5">batch-3.json &gt; max_tokens → minimal mode, edges dropped</text>
+          <!-- overflow arrow -->
+          <path d="M340 370 L380 370 L380 380 L390 365 L380 350 L380 360 L340 360 Z" fill="#dc2626" opacity="0.6"/>
+          <text x="400" y="375" fill="#fca5a5" font-size="10">overflow</text>
+        </g>
+
+        <!-- with chunking -->
+        <g font-family="ui-sans-serif, system-ui" font-size="11">
+          <text x="30" y="408" fill="#86efac" font-weight="600">com chunking</text>
+          <rect x="30" y="418" width="110" height="32" rx="6" fill="#14532d" stroke="#22c55e"/>
+          <text x="85" y="438" text-anchor="middle" fill="#bbf7d0">batch-3-part-1.json</text>
+          <rect x="150" y="418" width="110" height="32" rx="6" fill="#14532d" stroke="#22c55e"/>
+          <text x="205" y="438" text-anchor="middle" fill="#bbf7d0">batch-3-part-2.json</text>
+          <rect x="270" y="418" width="110" height="32" rx="6" fill="#14532d" stroke="#22c55e"/>
+          <text x="325" y="438" text-anchor="middle" fill="#bbf7d0">batch-3-part-3.json</text>
+          <text x="395" y="438" fill="#86efac" font-size="10">cada parte ≤ budget</text>
+        </g>
+
+        <!-- context window indicator -->
+        <g font-family="ui-sans-serif, system-ui" font-size="10">
+          <line x1="500" y1="330" x2="500" y2="450" stroke="#6b7280" stroke-dasharray="2 3"/>
+          <text x="510" y="345" fill="#9ca3af">context window</text>
+          <text x="510" y="358" fill="#9ca3af">budget</text>
+        </g>
+      </svg>
+      <figcaption class="mt-3 text-sm text-neutral-400">
+        <span class="text-purple-400 font-semibold">Três defesas em sequência:</span> <code>.understandignore</code> remove ruído antes da análise, Louvain mantém cada módulo num único batch (preservando edges <code>calls</code>/<code>related</code>) e o chunking divide saídas grandes em <code>batch-i-part-k.json</code> para caber no budget de Write — evitando o "minimal output mode" do issue #159.
+      </figcaption>
+    </figure>
 
     <!-- TÓPICO 4 -->
     <section id="topico-4" class="mb-16">

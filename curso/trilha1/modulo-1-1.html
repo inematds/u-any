@@ -206,6 +206,11 @@
         </ul>
       </div>
 
+      <figure class="bg-dark-700 rounded-xl border border-dark-600 p-3 sm:p-4 mb-6">
+        <img src="../assets/overview.png" loading="lazy" alt="Captura do dashboard do Understand Anything, com grafo do codebase à esquerda e sidebar de informações à direita." class="max-w-full h-auto rounded-lg w-full">
+        <figcaption class="text-xs text-neutral-500 mt-3 text-center italic">Captura real do dashboard — grafo + sidebar Info, gerados a partir do <code>knowledge-graph.json</code></figcaption>
+      </figure>
+
       <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
         <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🧩</span> O que <em>não</em> é</h3>
         <ul class="space-y-2 text-neutral-300">
@@ -301,6 +306,73 @@
           </ul>
         </div>
       </div>
+
+      <figure class="bg-dark-700 rounded-xl border border-dark-600 p-4 sm:p-6 mb-6 text-neutral-300">
+        <svg viewBox="0 0 800 280" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama antes e depois: codebase caótico vs. knowledge graph organizado">
+          <style>.lbl{font-family:ui-sans-serif,system-ui;font-size:13px;fill:currentColor}.ttl{font-family:ui-sans-serif,system-ui;font-size:15px;font-weight:700;fill:currentColor}.sm{font-family:ui-sans-serif,system-ui;font-size:11px;fill:currentColor;opacity:.65}</style>
+          <!-- ANTES -->
+          <text x="170" y="28" text-anchor="middle" class="ttl">Antes — arquivos soltos</text>
+          <g stroke="#6b7280" stroke-width="1.4" fill="#374151" fill-opacity=".35">
+            <rect x="40"  y="60"  width="60" height="34" rx="4"/>
+            <rect x="120" y="90"  width="60" height="34" rx="4"/>
+            <rect x="210" y="55"  width="60" height="34" rx="4"/>
+            <rect x="60"  y="130" width="60" height="34" rx="4"/>
+            <rect x="170" y="160" width="60" height="34" rx="4"/>
+            <rect x="250" y="125" width="60" height="34" rx="4"/>
+            <rect x="40"  y="200" width="60" height="34" rx="4"/>
+            <rect x="150" y="215" width="60" height="34" rx="4"/>
+            <rect x="245" y="200" width="60" height="34" rx="4"/>
+          </g>
+          <g class="lbl" text-anchor="middle">
+            <text x="70" y="82">auth.ts</text>
+            <text x="150" y="112">db.ts</text>
+            <text x="240" y="77">api.ts</text>
+            <text x="90" y="152">utils</text>
+            <text x="200" y="182">ui.tsx</text>
+            <text x="280" y="147">log</text>
+            <text x="70" y="222">cli.ts</text>
+            <text x="180" y="237">test</text>
+            <text x="275" y="222">cfg</text>
+          </g>
+          <text x="170" y="270" text-anchor="middle" class="sm">200k linhas · sem mapa · grep no escuro</text>
+
+          <!-- SETA -->
+          <g stroke="#34d399" stroke-width="3" fill="none">
+            <path d="M 360 145 L 440 145" marker-end="url(#arr)"/>
+          </g>
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker></defs>
+          <text x="400" y="135" text-anchor="middle" class="sm" style="opacity:1;fill:#34d399">/understand</text>
+
+          <!-- DEPOIS -->
+          <text x="620" y="28" text-anchor="middle" class="ttl">Depois — knowledge graph</text>
+          <g stroke="#34d399" stroke-width="1.4" fill="#064e3b" fill-opacity=".55">
+            <circle cx="620" cy="100" r="26"/>
+            <circle cx="520" cy="160" r="22"/>
+            <circle cx="600" cy="200" r="22"/>
+            <circle cx="710" cy="170" r="24"/>
+            <circle cx="720" cy="80"  r="18"/>
+            <circle cx="500" cy="90"  r="18"/>
+          </g>
+          <g stroke="#34d399" stroke-width="1.4" fill="none" opacity=".85">
+            <line x1="620" y1="100" x2="520" y2="160"/>
+            <line x1="620" y1="100" x2="710" y2="170"/>
+            <line x1="620" y1="100" x2="720" y2="80"/>
+            <line x1="620" y1="100" x2="500" y2="90"/>
+            <line x1="520" y1="160" x2="600" y2="200"/>
+            <line x1="600" y1="200" x2="710" y2="170"/>
+          </g>
+          <g class="lbl" text-anchor="middle" style="font-size:11px">
+            <text x="620" y="104">api</text>
+            <text x="520" y="164">auth</text>
+            <text x="600" y="204">db</text>
+            <text x="710" y="174">ui</text>
+            <text x="720" y="84">log</text>
+            <text x="500" y="94">cli</text>
+          </g>
+          <text x="620" y="270" text-anchor="middle" class="sm">arestas explicam quem chama quem · navegação visual</text>
+        </svg>
+        <figcaption class="text-sm text-center italic mt-3 opacity-75">Antes vs. depois: pasta caótica de arquivos vira grafo navegável com camadas e dependências explícitas.</figcaption>
+      </figure>
 
       <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
         <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Princípio</h3>

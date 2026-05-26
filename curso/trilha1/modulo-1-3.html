@@ -172,6 +172,72 @@
         </div>
       </div>
 
+      <figure class="bg-dark-700 rounded-xl border border-dark-600 p-4 sm:p-6 mb-6 text-neutral-300">
+        <svg viewBox="0 0 820 220" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de fluxo horizontal do pipeline do comando /understand --full: project-scanner, file-analyzer, architecture-analyzer, tour-builder, graph-reviewer e dashboard.">
+          <style>.lbl{font-family:ui-sans-serif,system-ui;font-size:12px;fill:currentColor;font-weight:600;text-anchor:middle}.sub{font-family:ui-sans-serif,system-ui;font-size:10px;fill:currentColor;opacity:.7;text-anchor:middle}.cmd{font-family:ui-sans-serif,system-ui;font-size:13px;fill:#34d399;font-weight:700;text-anchor:middle}</style>
+          <defs>
+            <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+          </defs>
+          <text x="410" y="22" class="cmd">/understand --full</text>
+          <!-- agents -->
+          <g>
+            <rect x="20"  y="70" width="120" height="80" rx="10" fill="#064e3b" fill-opacity=".55" stroke="#34d399" stroke-width="1.6"/>
+            <text x="80"  y="100" class="lbl">project-</text>
+            <text x="80"  y="118" class="lbl">scanner</text>
+            <text x="80"  y="138" class="sub">lista arquivos</text>
+          </g>
+          <g>
+            <rect x="160" y="70" width="120" height="80" rx="10" fill="#064e3b" fill-opacity=".55" stroke="#34d399" stroke-width="1.6"/>
+            <text x="220" y="100" class="lbl">file-</text>
+            <text x="220" y="118" class="lbl">analyzer</text>
+            <text x="220" y="138" class="sub">tree-sitter + LLM</text>
+          </g>
+          <g>
+            <rect x="300" y="70" width="130" height="80" rx="10" fill="#064e3b" fill-opacity=".55" stroke="#34d399" stroke-width="1.6"/>
+            <text x="365" y="100" class="lbl">architecture-</text>
+            <text x="365" y="118" class="lbl">analyzer</text>
+            <text x="365" y="138" class="sub">layers + domínio</text>
+          </g>
+          <g>
+            <rect x="450" y="70" width="120" height="80" rx="10" fill="#064e3b" fill-opacity=".55" stroke="#34d399" stroke-width="1.6"/>
+            <text x="510" y="100" class="lbl">tour-</text>
+            <text x="510" y="118" class="lbl">builder</text>
+            <text x="510" y="138" class="sub">ordem de leitura</text>
+          </g>
+          <g>
+            <rect x="590" y="70" width="120" height="80" rx="10" fill="#064e3b" fill-opacity=".55" stroke="#34d399" stroke-width="1.6"/>
+            <text x="650" y="100" class="lbl">graph-</text>
+            <text x="650" y="118" class="lbl">reviewer</text>
+            <text x="650" y="138" class="sub">valida schema</text>
+          </g>
+          <g>
+            <rect x="730" y="55" width="80" height="110" rx="10" fill="#34d399" fill-opacity=".25" stroke="#34d399" stroke-width="2"/>
+            <text x="770" y="100" class="lbl">dashboard</text>
+            <text x="770" y="118" class="sub">React Flow</text>
+            <text x="770" y="135" class="sub">/file-content</text>
+          </g>
+          <!-- setas -->
+          <g stroke="#34d399" stroke-width="1.8" fill="none" marker-end="url(#ar3)">
+            <line x1="140" y1="110" x2="160" y2="110"/>
+            <line x1="280" y1="110" x2="300" y2="110"/>
+            <line x1="430" y1="110" x2="450" y2="110"/>
+            <line x1="570" y1="110" x2="590" y2="110"/>
+            <line x1="710" y1="110" x2="730" y2="110"/>
+          </g>
+          <!-- artefatos -->
+          <g class="sub" text-anchor="middle">
+            <text x="150" y="178">scan.json</text>
+            <text x="290" y="178">files.json</text>
+            <text x="440" y="178">architecture.json</text>
+            <text x="580" y="178">tours.json</text>
+            <text x="720" y="195">knowledge-</text>
+            <text x="720" y="207">graph.json</text>
+          </g>
+          <text x="410" y="208" class="sub" style="opacity:.5">intermediates gravados em .understand-anything/ — limpos no fim</text>
+        </svg>
+        <figcaption class="text-sm text-center italic mt-3 opacity-75">Pipeline horizontal de <code>/understand --full</code>: cinco agents encadeados, cada um gravando seu intermediate, terminando no dashboard.</figcaption>
+      </figure>
+
       <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
         <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Por que escrever em disco e não retornar contexto?</h3>
         <p class="text-neutral-300">Os agents gravam em <code>intermediate/</code> em vez de devolver tudo no chat. Assim, o pipeline sobrevive a múltiplas conversas e não polui a janela de contexto do LLM. Resultado: você consegue analisar repos que jamais caberiam num único prompt.</p>
@@ -196,6 +262,11 @@
           <div class="text-neutral-500">→ Allowlist: 412 paths</div>
         </div>
       </div>
+
+      <figure class="bg-dark-700 rounded-xl border border-dark-600 p-3 sm:p-4 mb-6">
+        <img src="../assets/overview-structural.gif" loading="lazy" alt="Animação do dashboard rodando em localhost após /understand-dashboard: usuário navega pelo grafo estrutural e abre nós." class="max-w-full h-auto rounded-lg w-full">
+        <figcaption class="text-xs text-neutral-500 mt-3 text-center italic">É isso que abre no navegador depois de <code class="text-emerald-400">/understand-dashboard</code> — grafo estrutural ao vivo em <code>localhost:5173</code>.</figcaption>
+      </figure>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
