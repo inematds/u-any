@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.1 - Arquitetura do monorepo | Understand Anything</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #3b82f6; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">Understand Anything</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnico</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span>/</span>
+      <span class="text-blue-400">Módulo 2.1</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🏗️ Arquitetura do monorepo: core + dashboard + plugin</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Um repo, três cidadãos: o <strong class="text-blue-400">core</strong> (engine pura), o <strong class="text-blue-400">dashboard</strong>
+        (app React) e o <strong class="text-blue-400">plugin</strong> (skills, agents, manifests). Você vai entender quem fala com quem,
+        onde estão as fronteiras e por que importar do lugar errado quebra o Vite.
+      </p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermediário</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Estrutural</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📦 pnpm workspaces: o "porquê" de monorepo</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Understand Anything roda em <strong class="text-blue-400">três runtimes</strong> diferentes (Claude Code, Cursor, Copilot) e compartilha código entre
+        <strong class="text-blue-400">duas superfícies</strong> (skill TypeScript + dashboard React). Repositórios separados significariam publicar versões alinhadas
+        manualmente o tempo todo. pnpm workspaces resolve isso: um <code class="text-blue-400 bg-dark-700 px-1 rounded">workspace:*</code>
+        no <code>package.json</code> e o link entre pacotes vira simbólico, instantâneo.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> O contrato do workspace</h3>
+        <p class="text-neutral-300 mb-4">A raiz declara três coisas que definem tudo:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><code>pnpm-workspace.yaml</code> — lista os pacotes (<code>understand-anything-plugin/packages/*</code>)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><code>package.json</code> raiz — campo <code>packageManager</code> pina a versão do pnpm</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Scripts <code>--filter</code> — rodam tarefas só onde importa</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-3 font-mono text-blue-400">pnpm-workspace.yaml</h3>
+        <pre class="font-mono text-sm text-neutral-300 overflow-x-auto"><code>packages:
+  - "understand-anything-plugin"
+  - "understand-anything-plugin/packages/*"</code></pre>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">workspace protocol</h4><p class="text-xs text-neutral-400">Link simbólico entre pacotes locais</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Hoisting</h4><p class="text-xs text-neutral-400">Deps comuns sobem para a raiz</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">--filter</h4><p class="text-xs text-neutral-400">Roda script só num pacote</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">packageManager</h4><p class="text-xs text-neutral-400">Pin do gerenciador para reprodutibilidade</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🧩 packages/core: a engine de análise compartilhada</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <code class="text-blue-400">@understand-anything/core</code> é o cérebro neutro. Não sabe se está num <strong>terminal</strong>, num <strong>navegador</strong> ou
+        dentro de um agente — só sabe trabalhar com o grafo. Esse isolamento é o que permite o dashboard rodar a mesma lógica de busca que o skill TS roda no scan.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que vive no core</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>types</strong> — definição canônica de Node, Edge, Graph</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>schema</strong> — validação Zod do grafo persistido</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>persistence</strong> — read/write atômico de <code>knowledge-graph.json</code></span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>tree-sitter (WASM)</strong> — parser determinístico</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>search</strong> — fuzzy + semantic indices</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>tours</strong> — gerador de walkthroughs</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NÃO pertence ao core</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Componentes React (vão pro dashboard)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Lógica de slash-command (vai pro plugin/src)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Chamadas para LLM (são responsabilidade dos agents)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Configs de Vite/Tailwind/PostCSS</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>I/O específico de Claude Code, Cursor, etc.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Antes de criar uma feature nova, pergunte: <em>"isso é sobre o grafo em si, ou sobre como o grafo é usado?"</em>
+        Se for sobre o grafo, vai pro core. Se for sobre uso, vai pro dashboard ou plugin. Esse teste evita 80% das discussões de arquitetura.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Pure TS</h4><p class="text-xs text-neutral-400">Sem deps de framework</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">SSOT</h4><p class="text-xs text-neutral-400">Schema canônico</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Subpaths</h4><p class="text-xs text-neutral-400">Browser-safe exports</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Vitest</h4><p class="text-xs text-neutral-400">Testes rápidos com filter</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🌐 Subpath exports browser-safe</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O core importa <code>node:fs</code> e <code>node:path</code> na camada de persistência. Se o dashboard importasse o <strong class="text-blue-400">entry default</strong>,
+        o Vite tentaria empacotar isso pro navegador e o build morreria. A solução: <strong class="text-blue-400">conditional exports</strong> que expõem
+        só fatias seguras.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-3 font-mono text-blue-400">packages/core/package.json (trecho)</h3>
+        <pre class="font-mono text-sm text-neutral-300 overflow-x-auto"><code>{
+  "exports": {
+    ".":        "./dist/index.js",         // Node-only (skill, scan)
+    "./types":  "./dist/types/index.js",   // Browser-safe
+    "./schema": "./dist/schema/index.js",  // Browser-safe
+    "./search": "./dist/search/index.js"   // Browser-safe
+  }
+}</code></pre>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">🚨</span> Atenção</h3>
+        <p class="text-neutral-300">
+          Importar <code>from '@understand-anything/core'</code> dentro de <code>packages/dashboard/</code> é <strong>proibido</strong>.
+          Use <code>from '@understand-anything/core/search'</code>, <code>/types</code>, ou <code>/schema</code>. Esse é um dos erros que mais aparecem em PR de contribuidor novo.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ FAZER (dashboard)</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm font-mono">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>import {'{ Graph }'} from '@ua/core/types'</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>import {'{ validate }'} from '@ua/core/schema'</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>import {'{ fuzzySearch }'} from '@ua/core/search'</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ NÃO fazer (dashboard)</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm font-mono">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>import {'{ ... }'} from '@ua/core'</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>import {'{ readGraph }'} from '@ua/core/persistence'</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>import fs from 'node:fs' (browser!)</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Conditional exports</h4><p class="text-xs text-neutral-400">Múltiplos entrypoints</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Boundary</h4><p class="text-xs text-neutral-400">Browser ↔ Node</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Vite-friendly</h4><p class="text-xs text-neutral-400">Build não quebra</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">TS strict</h4><p class="text-xs text-neutral-400">.d.ts por subpath</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🎨 packages/dashboard: o frontend que o usuário vê</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Aqui mora o app React. Stack escolhida pra ser <strong class="text-blue-400">leve e moderna</strong>: Vite como bundler, React Flow para o canvas do grafo,
+        Zustand para estado global e Tailwind v4 com tokens centralizados. Sem Redux, sem Monaco, sem ChatPanel — o foco é o grafo.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Layout: 75% grafo + sidebar 360px</h4>
+            <p class="text-sm text-neutral-400 mb-3">Decisão de UX</p>
+            <p class="text-neutral-300 text-sm">O grafo é a estrela. A sidebar à direita é um <em>painel auxiliar</em> que reage à seleção. Nada de painel inferior cheio de abas — isso vira ruído.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Schema validation no boot</h4>
+            <p class="text-sm text-neutral-400 mb-3">Falha cedo, falha alto</p>
+            <p class="text-neutral-300 text-sm">Ao carregar o JSON, o dashboard valida contra o schema do core. Falha = banner vermelho explicando qual campo está errado. Nunca tela em branco.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Tema dark luxury</h4>
+            <p class="text-sm text-neutral-400 mb-3">Identidade visual</p>
+            <p class="text-neutral-300 text-sm">Preto profundo <code>#0a0a0a</code>, acento gold/amber <code>#d4a574</code>, tipografia DM Serif Display nos títulos. Tailwind v4 tokens centralizam tudo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">React Flow</h4><p class="text-xs text-neutral-400">Canvas de grafo</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Zustand</h4><p class="text-xs text-neutral-400">Estado global enxuto</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Tailwind v4</h4><p class="text-xs text-neutral-400">Tokens centralizados</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">prism-react-renderer</h4><p class="text-xs text-neutral-400">Code viewer leve</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔌 understand-anything-plugin/: skills, agents, hooks, src</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A pasta <code>understand-anything-plugin/</code> é o "embrulho" Claude-Code. Ela junta TypeScript dos slash-commands em <code>src/</code>,
+        definições de <code>skills/</code>, agentes em <code>agents/</code> e hooks de auto-update. É o ponto de integração com o runtime.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-3 font-mono text-blue-400">Estrutura</h3>
+        <pre class="font-mono text-sm text-neutral-300 overflow-x-auto"><code>understand-anything-plugin/
+├── packages/
+│   ├── core/          # @understand-anything/core
+│   └── dashboard/     # @understand-anything/dashboard
+├── src/               # TypeScript dos slash-commands
+│   ├── understand-chat.ts
+│   ├── understand-diff.ts
+│   ├── understand-explain.ts
+│   └── understand-onboard.ts
+├── skills/            # Skill definitions (.md frontmatter)
+├── agents/            # Agentes do pipeline
+│   ├── project-scanner.md
+│   ├── file-analyzer.md
+│   ├── architecture-analyzer.md
+│   ├── tour-builder.md
+│   └── graph-reviewer.md
+└── .claude-plugin/
+    └── plugin.json    # Manifest Claude Code</code></pre>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Como nasce um comando novo</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>1.</strong> Escreve a lógica TS em <code>src/understand-novo.ts</code></li>
+          <li><strong>2.</strong> Cria a skill em <code>skills/understand-novo/SKILL.md</code> com frontmatter</li>
+          <li><strong>3.</strong> Se precisar de pipeline, adiciona agente em <code>agents/</code></li>
+          <li><strong>4.</strong> Builda com <code>pnpm --filter @understand-anything/skill build</code></li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Agentes <strong>omitem</strong> o campo <code>model</code> no frontmatter. Era <code>model: inherit</code> antes — mas <em>opencode</em>
+        e outras ferramentas tratam isso como literal e quebram com <code>ProviderModelNotFoundError</code>. Sem campo, cada plataforma usa o default dela. Veja a issue #167.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">src/</h4><p class="text-xs text-neutral-400">TS dos comandos</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">skills/</h4><p class="text-xs text-neutral-400">Definições .md</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">agents/</h4><p class="text-xs text-neutral-400">Pipeline workers</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">hooks/</h4><p class="text-xs text-neutral-400">post-commit, etc.</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🛒 Três manifests: Claude, Cursor, Copilot</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Cada runtime quer um manifesto diferente — e cada um valida coisas diferentes. O Understand Anything mantém <strong class="text-blue-400">três pastas</strong>:
+        <code>.claude-plugin/</code>, <code>.cursor-plugin/</code>, <code>.copilot-plugin/</code>. Cada uma com seu <code>plugin.json</code>. Mas o número da versão tem que bater.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">🚨</span> Cinco arquivos, uma versão</h3>
+        <p class="text-neutral-300 mb-3">Quando empurra pra remote, atualize a versão em <strong>todos</strong> os cinco:</p>
+        <ul class="space-y-1 text-neutral-300 text-sm font-mono">
+          <li>• understand-anything-plugin/package.json</li>
+          <li>• understand-anything-plugin/.claude-plugin/plugin.json</li>
+          <li>• .claude-plugin/plugin.json</li>
+          <li>• .cursor-plugin/plugin.json</li>
+          <li>• .copilot-plugin/plugin.json</li>
+        </ul>
+        <p class="text-neutral-400 text-sm mt-3"><strong>Cuidado:</strong> <code>.claude-plugin/marketplace.json</code> NÃO tem campo <code>version</code>. Adicionar quebra a validação do marketplace.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Auto-discovery</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Cursor: detecta <code>.cursor-plugin/plugin.json</code> ao abrir o repo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>VS Code + Copilot (v1.108+): mesma ideia via <code>.copilot-plugin/</code></span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Sem instalação manual no fluxo padrão</span></li>
+          </ul>
+        </div>
+        <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+          <h4 class="font-bold text-blue-400 mb-4">📦 Instalação explícita</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li>Claude Code: <code class="text-xs">/plugin install understand-anything</code></li>
+            <li>Codex/OpenCode/etc: <code class="text-xs">install.sh codex</code></li>
+            <li>Copilot CLI: <code class="text-xs">copilot plugin install ...</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">3 manifests</h4><p class="text-xs text-neutral-400">Mesmo plugin, runtimes diferentes</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">5 versões</h4><p class="text-xs text-neutral-400">Sincronizadas em cada release</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">marketplace.json</h4><p class="text-xs text-neutral-400">Sem version (schema strict)</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">install.sh</h4><p class="text-xs text-neutral-400">12 plataformas suportadas</p></div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📋</span> Resumo do Módulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Monorepo via pnpm workspaces</strong><span class="text-neutral-400"> — três pacotes, um grafo de deps, builds com filter.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Core é a engine neutra</strong><span class="text-neutral-400"> — types, schema, search, tours. Sem framework.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Subpath exports protegem o dashboard</strong><span class="text-neutral-400"> — use <code>/types</code>, <code>/schema</code>, <code>/search</code>.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Dashboard é graph-first</strong><span class="text-neutral-400"> — 75% grafo + sidebar 360px, dark luxury.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Plugin junta tudo</strong><span class="text-neutral-400"> — src, skills, agents, hooks num só lugar.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Três manifests, cinco versões</strong><span class="text-neutral-400"> — release exige sincronização.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">2.2 — O pipeline de agentes e o knowledge graph</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
+          <a href="modulo-2-2.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Próximo Módulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Understand Anything — 2026 · <a href="https://github.com/inematds/u-any" target="_blank" class="text-sky-400 hover:text-sky-300">github.com/inematds/u-any</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') { themeToggleDarkIcon.classList.remove('hidden'); html.classList.remove('dark'); }
+    else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

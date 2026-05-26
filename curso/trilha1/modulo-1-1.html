@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.1 — O que é Understand Anything | Understand Anything</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185, 28, 28, 0.06); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185, 28, 28, 0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🔎</span>
+            <span class="font-bold text-lg hidden sm:inline">Understand Anything</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Pipeline &amp; Agentes</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Customização</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../index.html" class="hover:text-emerald-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Módulo 1.1</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧭 O que é Understand Anything e qual problema resolve</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">A dor concreta — repositório gigante, contexto zero — e como um plugin que combina LLM com tree-sitter muda a forma de chegar perto de um codebase desconhecido.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">50</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Básico</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Teoria</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <h2 class="text-2xl font-bold mb-6">Conteúdo detalhado</h2>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">😵 O dev novo no codebase de 200 mil linhas</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Você acabou de entrar num time. O repositório tem <strong class="text-emerald-400">200 mil linhas</strong>, 14 serviços, 3 linguagens e zero arquiteto disponível para te explicar. Onde começar? A resposta tradicional — "leia o README e vá clicando" — não escala. O Understand Anything nasce para resolver exatamente esse momento.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🎯</span> A pergunta central</h3>
+        <p class="text-neutral-300 mb-4">Se um dev sênior gasta <strong>3 a 6 semanas</strong> só para "se localizar" num repositório novo, qual o custo agregado para o time? E para a empresa?</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Tempo de onboarding caro e diluído em interrupções no time existente.</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Decisões tomadas sem contexto — features duplicadas, regressões silenciosas.</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Tribal knowledge concentrado em poucas pessoas (bus factor baixo).</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Sinais do problema</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>~6 semanas</strong> — tempo médio de onboarding em codebases grandes (Stack Overflow Dev Survey).</li>
+          <li><strong>40% do tempo</strong> de um dev sênior é gasto explicando contexto que já existe em algum lugar.</li>
+          <li><strong>1 a 3 perguntas/dia</strong> de júnior em Slack durante os primeiros meses — todas elas viáveis num grafo.</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Onboarding</h4><p class="text-sm text-neutral-400">Tempo até o primeiro PR útil</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Bus factor</h4><p class="text-sm text-neutral-400">Quantas pessoas sabem cada parte</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Doc rot</h4><p class="text-sm text-neutral-400">README mente a partir do mês 3</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Leitura passiva</h4><p class="text-sm text-neutral-400">Ler ≠ entender</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📚 O que o time faz hoje (e onde quebra)</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Antes de comprar a ideia da ferramenta, vale mapear o que <strong class="text-emerald-400">já se faz</strong>. Cada técnica tem um lugar — e também um teto.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que funciona</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>Pair com sênior</strong> — alta qualidade, baixa escala.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>ADRs bem escritas</strong> — explicam o "porquê", não só o "o quê".</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>Tour repo guiado</strong> quando alguém tem tempo de gravar.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>IDE com "Find usages"</strong> — bom para navegação local.</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que falha</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span><strong>"Lê o README"</strong> — desatualizado a partir do mês 3.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span><strong>grep / ripgrep cego</strong> — sem entender semântica de chamada.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span><strong>"Pergunta no Slack"</strong> — interrompe o time, não acumula.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span><strong>Vídeos longos</strong> — ninguém revê.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Insight</h3>
+        <p class="text-neutral-300">O denominador comum dos métodos que falham: nenhum deles <strong>persiste contexto estrutural</strong>. Cada nova pessoa redescobre tudo do zero. O Understand Anything inverte isso — o entendimento vira artefato versionável.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔎 A proposta do Understand Anything</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em uma frase: um <strong class="text-emerald-400">plugin open-source</strong> que vira qualquer codebase num grafo interativo navegável. Em duas frases: tree-sitter extrai a estrutura, LLMs descrevem em inglês, o dashboard mostra tudo junto.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🧬</span> A fórmula</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+          tree-sitter (estrutura) + LLM (significado) + React Flow (UI) = grafo navegável
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Tree-sitter (WASM):</strong> parser determinístico, mesma saída sempre, sem alucinação.</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>LLM:</strong> sumariza arquivos, descobre intenção, nomeia padrões.</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>React Flow + Zustand:</strong> dashboard que aguenta milhares de nós.</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🧩</span> O que <em>não</em> é</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li>Não é "outro chatbot" — produz artefato visual persistente.</li>
+          <li>Não é IDE — não substitui VS Code; complementa.</li>
+          <li>Não é SaaS — roda local, codebase nunca sai da sua máquina.</li>
+          <li>Não é vendor-locked — slash commands portáveis entre Claude Code, Cursor, Copilot, Codex.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🧑‍💻 Cinco personas que mais sofrem</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Não é só o júnior recém-contratado. Cinco perfis ganham com o grafo — e cada um usa o dashboard de um jeito diferente.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Dev novo no time</h4>
+            <p class="text-sm text-neutral-400 mb-3">Persona: Learn</p>
+            <p class="text-neutral-300 text-sm">Roda <code class="text-emerald-400">/understand-onboard</code>, segue o tour, faz primeiro PR em dias e não em semanas.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Reviewer de PR grande</h4>
+            <p class="text-sm text-neutral-400 mb-3">Persona: Review</p>
+            <p class="text-neutral-300 text-sm">Roda <code class="text-emerald-400">/understand-diff</code> para ver o raio de impacto antes de aprovar 40 arquivos.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">PM tentando estimar</h4>
+            <p class="text-sm text-neutral-400 mb-3">Persona: Plan</p>
+            <p class="text-neutral-300 text-sm">Olha o grafo de domínio para entender o quão acoplado o sistema está antes de prometer prazo.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">4</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Arquiteto em auditoria</h4>
+            <p class="text-sm text-neutral-400 mb-3">Persona: Audit</p>
+            <p class="text-neutral-300 text-sm">Usa layer view para identificar violações arquiteturais (ex: UI chamando DB direto).</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">5</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Suporte caçando bug</h4>
+            <p class="text-sm text-neutral-400 mb-3">Persona: Debug</p>
+            <p class="text-neutral-300 text-sm">Busca semântica "onde processa pagamento?" e abre os nós relevantes para root-cause.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🆚 Tradicional vs Understand Anything</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Comparação direta entre o jeito que o time faz hoje e o que muda quando o grafo vira parte do fluxo.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Sem a ferramenta</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Abrir arquivo aleatório no IDE e tentar adivinhar.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pingar no Slack: "alguém sabe onde X acontece?"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Code review baseado em "li o diff, parece ok".</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Documentação que ninguém mantém.</span></li>
+          </ul>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Com Understand Anything</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Tour guiado por ordem de dependência.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><code class="text-emerald-400">/understand-chat</code> responde com nós e caminhos.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><code class="text-emerald-400">/understand-diff</code> mostra o raio de impacto.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>O grafo é regenerável — não envelhece como prosa.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Princípio</h3>
+        <p class="text-neutral-300">"Documentação é prosa que envelhece; grafo é artefato que se regenera." O Understand Anything muda o tipo de coisa que você produz para entender o código.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🌐 Onde roda: agentes suportados</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Understand Anything é um <strong class="text-emerald-400">Claude Code plugin</strong> — mas via auto-discovery os mesmos slash commands aparecem em Cursor, Copilot, Codex, Gemini CLI, OpenCode, Vibe CLI e similares. Você instala uma vez, usa em qualquer cliente.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📦</span> Como o agente descobre os comandos</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
+          <div><span class="text-neutral-500"># o cliente lê o plugin manifest</span></div>
+          <div>understand-anything-plugin/</div>
+          <div>├── .claude-plugin/plugin.json</div>
+          <div>├── .cursor-plugin/plugin.json</div>
+          <div>├── .copilot-plugin/plugin.json</div>
+          <div>└── skills/understand.md ← slash command</div>
+        </div>
+        <p class="text-neutral-400 text-sm mt-4">Cada cliente tem seu manifest. Quando algum não suporta auto-discovery, o README explica o fallback manual.</p>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">⚠️</span> Detalhe importante</h3>
+        <p class="text-neutral-300 mb-2">O campo <code class="text-blue-400">model: inherit</code> foi removido dos agents porque era um keyword só do Claude Code — clientes como OpenCode tratavam como model id literal e quebravam com <code>ProviderModelNotFoundError</code>.</p>
+        <p class="text-neutral-300 text-sm">Hoje o model é omitido, e cada plataforma usa o default dela. Resultado: portabilidade real.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Auto-discovery</h4><p class="text-sm text-neutral-400">Plugin manifest por cliente</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Fallback manual</h4><p class="text-sm text-neutral-400">Cursor às vezes precisa</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Multi-cliente</h4><p class="text-sm text-neutral-400">Claude, Cursor, Copilot, Codex</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Sem lock-in</h4><p class="text-sm text-neutral-400">Troca de agente sem perder grafo</p></div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Dor real</strong><span class="text-neutral-400"> — onboarding em codebases grandes custa semanas e tempo de sênior.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Métodos tradicionais não escalam</strong><span class="text-neutral-400"> — README envelhece, Slack interrompe, grep é cego.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">A proposta</strong><span class="text-neutral-400"> — tree-sitter + LLM + dashboard = grafo persistente.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Cinco personas</strong><span class="text-neutral-400"> — Learn, Review, Plan, Audit, Debug.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Multi-cliente</strong><span class="text-neutral-400"> — Claude Code, Cursor, Copilot, Codex, sem vendor lock-in.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">1.2 — O conceito de knowledge graph e o dashboard interativo</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
+          <a href="modulo-1-2.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Próximo Módulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Understand Anything — <a href="https://github.com/inematds/u-any" target="_blank" class="text-sky-400 hover:text-sky-300">github.com/inematds/u-any</a> · INEMA.CLUB 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

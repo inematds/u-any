@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3.1 — Extractors e custom agents | Understand Anything</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">Understand Anything</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnico</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Início</a><span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
+      <span class="text-purple-400">Módulo 3.1</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧩 Estendendo o Understand Anything: language extractors e custom agents</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Crie extractors para novas linguagens com tree-sitter, registre no <code class="text-purple-400">PluginRegistry</code> e adicione agentes customizados que entram no pipeline gravando em <code class="text-purple-400">.understand-anything/intermediate/</code>.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">60</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Avançado</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Hands-on</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TÓPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🏗️ Arquitetura de plugins: LanguageConfig e PluginRegistry</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A arquitetura do Understand Anything é <strong class="text-purple-400">language-neutral por design</strong>. Toda lógica específica de linguagem vive em <code>packages/core/src/languages/</code> como configs — não código forkado. O <code>PluginRegistry</code> mapeia extensões para configs e o resto do pipeline trata todas as linguagens igualmente.</p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">🧠</span> Conceito principal</h3>
+        <p class="text-neutral-300 mb-4">Config-first com escape hatch (hybrid). Para 90% das linguagens, uma config declarativa basta. Para AST exóticas, há <code>customAnalyzer?: (node) =&gt; AnalysisResult</code>.</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><code>id</code>, <code>displayName</code>, <code>extensions[]</code> — identidade básica</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><code>treeSitter.grammarPackage</code> — pacote npm com WASM</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><code>treeSitter.nodeTypes</code> — map de function/class/import/export</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><code>concepts[]</code> — termos idiomáticos para enriquecer o prompt</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3">📄 LanguageConfig (exemplo Python)</h3>
+        <pre class="font-mono text-sm text-neutral-300 bg-dark-900 p-4 rounded-lg overflow-x-auto"><code>{
+  id: "python",
+  displayName: "Python",
+  extensions: [".py", ".pyi"],
+  treeSitter: {
+    grammarPackage: "tree-sitter-python",
+    nodeTypes: {
+      function: ["function_definition"],
+      class:    ["class_definition"],
+      import:   ["import_statement", "import_from_statement"],
+      export:   [],
+      typeAnnotation: ["type"]
+    }
+  },
+  concepts: ["decorators", "list comprehensions", "generators", "dunder methods"],
+  filePatterns: { config: "pyproject.toml" }
+}</code></pre>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Detecção</div><div class="text-xs text-neutral-400">Por extensão de arquivo</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Registry</div><div class="text-xs text-neutral-400">Map id → config</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Snippet</div><div class="text-xs text-neutral-400">Markdown por linguagem</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Escape hatch</div><div class="text-xs text-neutral-400">customAnalyzer opcional</div></div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🌳 Gramáticas tree-sitter em WASM</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">O Understand Anything usa <strong class="text-purple-400">web-tree-sitter (WASM)</strong> em vez do binding nativo. Razão registrada no CLAUDE.md: <em>native bindings fail on darwin/arm64 + Node 24</em>. Toda gramática nova precisa estar disponível como WASM.</p>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Por que WASM</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Portabilidade:</strong> mesma gramática roda em CLI, dashboard browser e CI</li>
+          <li><strong>Sem build nativo:</strong> nada de node-gyp, libtree-sitter, toolchain por plataforma</li>
+          <li><strong>Determinístico:</strong> versão pinned no package.json = parsing reprodutível</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Usar pacotes <code>tree-sitter-X</code> oficiais que distribuem .wasm</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Pinar versão exata (sem ^ ou ~)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Validar com <code>Parser.Language.load()</code> antes de registrar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Mapear nodeTypes lendo o <code>grammar.js</code> ou node-types.json oficial</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ EVITAR</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Compilar gramática à mão se há pacote oficial</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Usar <code>tree-sitter</code> nativo no dashboard (quebra browser)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Adivinhar nodeTypes — sempre conferir AST de um snippet</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Aceitar gramática experimental sem testar fixture</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Antes de registrar uma linguagem, use o playground oficial do tree-sitter (<code>tree-sitter.github.io/tree-sitter/playground</code>) com um snippet representativo. Os node types visíveis ali são os mesmos que você deve colocar em <code>nodeTypes</code>.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Format</div><div class="text-xs text-neutral-400">.wasm</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Loader</div><div class="text-xs text-neutral-400">web-tree-sitter</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Source</div><div class="text-xs text-neutral-400">npm package</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Validação</div><div class="text-xs text-neutral-400">Fixture mínima</div></div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📝 Snippets de prompt por linguagem</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">O <code>file-analyzer</code> usa <strong class="text-purple-400">prompt base genérico + snippet markdown</strong> da linguagem detectada. Sem snippet, o LLM aplica conceitos de TypeScript em código Python e produz resumos errados.</p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3">📄 skills/understand/languages/python.md (exemplo)</h3>
+        <pre class="font-mono text-sm text-neutral-300 bg-dark-900 p-4 rounded-lg overflow-x-auto"><code>## Python idioms
+
+- Decorators (`@staticmethod`, `@property`, `@dataclass`) attach behavior
+- Dunder methods (`__init__`, `__call__`, `__enter__`) define protocol
+- Context managers via `with` statement
+- Generators (`yield`) for lazy iteration
+- Type hints are optional but rich (Protocol, TypeVar, Literal)
+
+## Common file roles
+- `__init__.py` → package marker / re-exports
+- `conftest.py` → pytest fixtures
+- `setup.py` / `pyproject.toml` → packaging config</code></pre>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">📊 O que entra no snippet</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Idioms:</strong> 5-10 conceitos que aparecem em todo código real da linguagem</li>
+          <li><strong>File roles:</strong> nomes de arquivo que carregam semântica especial</li>
+          <li><strong>Pitfalls:</strong> armadilhas comuns que o LLM costuma confundir</li>
+          <li><strong>NÃO incluir:</strong> documentação genérica da sintaxe (o LLM já sabe)</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Local</div><div class="text-xs text-neutral-400">skills/understand/languages/</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Formato</div><div class="text-xs text-neutral-400">Markdown</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Tamanho</div><div class="text-xs text-neutral-400">200-400 tokens</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Estilo</div><div class="text-xs text-neutral-400">Bullet idiomático</div></div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🤖 Anatomia de um agente customizado</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Agentes vivem em <code>understand-anything-plugin/agents/*.md</code>. Cada um é um arquivo markdown com <strong class="text-purple-400">frontmatter YAML</strong> declarando contrato e <strong class="text-purple-400">corpo de prompt</strong> descrevendo a tarefa.</p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3">📄 Frontmatter mínimo</h3>
+        <pre class="font-mono text-sm text-neutral-300 bg-dark-900 p-4 rounded-lg overflow-x-auto"><code>---
+name: security-analyzer
+description: Identifica padrões de risco de segurança e escreve security-report.json
+tools: [Read, Glob, Grep, Write]
+---
+
+You are a security-focused subagent. Read each file in
+`.understand-anything/intermediate/scan-result.json`, look for...
+
+Output: write findings to
+`.understand-anything/intermediate/security-report.json` with schema {...}.</code></pre>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atenção — campo model</h3>
+        <p class="text-neutral-300">NÃO incluir <code>model: inherit</code> no frontmatter. Foi removido na issue <a href="https://github.com/inematds/u-any/issues/167" class="text-purple-400 hover:underline" target="_blank">#167</a> porque opencode (e ferramentas não-Claude) tratam "inherit" como id literal de modelo e quebram com <code>ProviderModelNotFoundError</code>. Omita o campo — cada plataforma usa seu default.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Declarar todas as tools usadas em <code>tools:</code></span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Escrever output sempre em <code>.understand-anything/intermediate/</code></span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Definir schema do JSON de saída no prompt</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Description curta mas com trigger phrases reais</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ EVITAR</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Incluir <code>model: inherit</code> (issue #167)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Devolver dados grandes pelo contexto em vez de Write</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Depender de variáveis de ambiente sem fallback</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Esquecer cleanup do intermediate após assembly</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔌 Onde plugar no pipeline (timeline das fases)</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">O <code>/understand</code> é orquestrado em <strong class="text-purple-400">6+ fases sequenciais</strong>. Cada uma lê e escreve arquivos em <code>intermediate/</code>. Saber onde seu agente entra define o que ele recebe e o que pode produzir.</p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Fase 1 — project-scanner</h4>
+            <p class="text-sm text-neutral-400 mb-2">Determinístico (sem LLM)</p>
+            <p class="text-neutral-300 text-sm">Lista arquivos, detecta linguagem, pré-resolve imports. Escreve <code>scan-result.json</code>.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Fase 1.5 — compute-batches</h4>
+            <p class="text-sm text-neutral-400 mb-2">Algorítmico (Louvain)</p>
+            <p class="text-neutral-300 text-sm">Lê scan-result, agrupa arquivos por comunidade no grafo de imports. Escreve <code>batches.json</code>.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Fase 2 — file-analyzer (×N)</h4>
+            <p class="text-sm text-neutral-400 mb-2">LLM, paralelo</p>
+            <p class="text-neutral-300 text-sm">Um agente por batch. Escreve <code>batch-i.json</code> ou multi-part. Bom ponto para análises de código focadas em arquivo.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">4</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Fase 3 — merge + architecture-analyzer</h4>
+            <p class="text-sm text-neutral-400 mb-2">Algorítmico + LLM</p>
+            <p class="text-neutral-300 text-sm">Merge dos batches → assembled-graph.json. Architecture analyzer adiciona camadas. Bom ponto para análises de alto nível.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">5</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Fase 4 — tour-builder + graph-reviewer</h4>
+            <p class="text-sm text-neutral-400 mb-2">LLM</p>
+            <p class="text-neutral-300 text-sm">Cria tours guiados e revisa o grafo final. Escreve <code>knowledge-graph.json</code> definitivo + cleanup do intermediate.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Plugue agentes que <strong>enriquecem nós existentes</strong> entre Fase 3 e Fase 4 (depois do assembly, antes do reviewer). Agentes que <strong>filtram ou substituem</strong> arquivos devem entrar logo após Fase 1.</p>
+      </div>
+    </section>
+
+    <!-- TÓPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🧪 Validação, schema e testes</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Toda extensão precisa de <strong class="text-purple-400">fixture mínima</strong>, <strong class="text-purple-400">schema validation</strong> e <strong class="text-purple-400">snapshot vitest</strong>. Sem isso, regressões aparecem só quando um usuário tropeça no schema validator banner do dashboard.</p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">🛡️</span> Estratégia de teste em 3 camadas</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">1.</span><span><strong>Unit (vitest):</strong> testa parsing de fixture pequena na nova linguagem — <code>pnpm --filter @understand-anything/core test</code></span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">2.</span><span><strong>Schema:</strong> valida que o output do agente bate com o tipo <code>KnowledgeGraph</code> em <code>packages/core/src/schema.ts</code></span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">3.</span><span><strong>Dogfood:</strong> rode <code>/understand --full</code> no próprio repo do u-any — se o grafo regrediu, você quebrou algo</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3">📄 Fixture típica</h3>
+        <pre class="font-mono text-sm text-neutral-300 bg-dark-900 p-4 rounded-lg overflow-x-auto"><code>tests/fixtures/python/
+├── simple_module.py          # 1 função + 1 import
+├── class_with_methods.py     # 1 classe + 3 métodos
+├── decorators_demo.py        # decorators e dunder
+└── expected/
+    ├── simple_module.json    # snapshot do scan-result
+    └── class_with_methods.json</code></pre>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Antes de abrir PR, copie sua versão modificada para <code>~/.claude/plugins/cache/understand-anything/.../&lt;VERSION&gt;</code> e rode <code>/understand --full</code> em um projeto Python real. O dogfood pega o que o teste não pega.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Vitest</div><div class="text-xs text-neutral-400">Unit + snapshot</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Schema</div><div class="text-xs text-neutral-400">KnowledgeGraph type</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">Dogfood</div><div class="text-xs text-neutral-400">Em projeto real</div></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 text-sm font-semibold mb-1">CI</div><div class="text-xs text-neutral-400">Antes do release</div></div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do módulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Arquitetura é language-neutral</strong><span class="text-neutral-400"> — config-first com escape hatch para AST exóticas</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Gramáticas em WASM</strong><span class="text-neutral-400"> — web-tree-sitter, nada de native bindings</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Snippet markdown por linguagem</strong><span class="text-neutral-400"> — idioms + file roles + pitfalls</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Agentes: omita <code>model: inherit</code></strong><span class="text-neutral-400"> — quebra opencode (issue #167)</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Escreva sempre em intermediate/</strong><span class="text-neutral-400"> — nunca devolva dado grande pelo contexto</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Teste em 3 camadas</strong><span class="text-neutral-400"> — vitest + schema + dogfood</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Próximo módulo:</h3>
+          <p class="text-neutral-300">3.2 — Performance e escala: .understandignore, token reduction, semantic batching, output chunking</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
+          <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Próximo módulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Understand Anything — projeto open-source mantido por <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · <a href="https://github.com/inematds/u-any" target="_blank" class="hover:text-purple-400">github.com/inematds/u-any</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      darkIcon.classList.remove('hidden'); html.classList.remove('dark');
+    } else { lightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      darkIcon.classList.toggle('hidden'); lightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

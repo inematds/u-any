@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understand Anything | Curso Completo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - Emerald (T1) */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:border-emerald-500\/30:hover { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+
+    /* Light mode - Blue (T2) */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:border-blue-500\/30:hover { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    /* Light mode - Purple (T3) */
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:border-purple-500\/30:hover { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+
+    /* Light mode - remove gradientes (fundo uniforme) */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Dark mode - bordas e linhas divisorias mais suaves */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <!-- Logo + INEMA.CLUB -->
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">Understand Anything</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+
+        <!-- Trilhas + Theme Toggle -->
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Técnico</span>
+          </a>
+          <a href="trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avançado</span>
+          </a>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-gradient-to-br from-emerald-900/20 via-dark-900 to-dark-900 py-20 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-3 py-1 bg-primary/10 text-primary border border-primary/40 text-xs font-semibold rounded-full mb-6">
+        CURSO OPEN-SOURCE • 3 TRILHAS
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6">
+        🧠 Entenda <span class="text-primary">qualquer código</span> em minutos
+      </h1>
+      <p class="text-lg sm:text-xl text-neutral-300 max-w-3xl mx-auto leading-relaxed mb-8">
+        Aprenda a usar e dominar o <strong class="text-yellow-400">Understand Anything</strong> — a ferramenta open-source que combina LLM + análise estática (tree-sitter/WASM) para gerar dashboards interativos de codebases inteiras.
+      </p>
+      <p class="text-base text-neutral-400 max-w-2xl mx-auto">
+        Do primeiro <code class="px-2 py-1 bg-dark-800 rounded text-emerald-400 text-sm">/understand</code> até customizar agentes e extractors. Três trilhas: <strong class="text-emerald-400">Fundamentos</strong>, <strong class="text-blue-400">Técnico</strong> e <strong class="text-purple-400">Avançado</strong>.
+      </p>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600">
+          <div class="text-2xl font-bold text-yellow-400">3</div>
+          <div class="text-xs text-neutral-400">Trilhas</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600">
+          <div class="text-2xl font-bold text-yellow-400">~6h</div>
+          <div class="text-xs text-neutral-400">Conteúdo</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600">
+          <div class="text-2xl font-bold text-yellow-400">Grátis</div>
+          <div class="text-xs text-neutral-400">Open-source</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TRILHAS -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold mb-3">Escolha sua trilha</h2>
+      <p class="text-neutral-400 max-w-2xl mx-auto">Três caminhos progressivos. Comece pelos fundamentos ou pule direto para arquitetura e extensão da ferramenta.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Trilha 1 - Emerald -->
+      <a href="trilha1/index.html" class="group bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 hover:border-emerald-500/30 p-6 transition-all hover:bg-emerald-500/10 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRILHA 1</span>
+          <span class="text-xs text-neutral-500">~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 group-hover:text-emerald-400 transition-colors">🌱 Fundamentos</h3>
+        <p class="text-neutral-300 text-sm mb-6 leading-relaxed flex-grow">
+          O que é o Understand Anything, o problema que resolve, o knowledge graph, o dashboard e o fluxo completo do <code class="text-emerald-400">/understand</code>. Sem pré-requisitos técnicos.
+        </p>
+        <ul class="space-y-2 text-sm text-neutral-400 mb-6">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>O problema de entender codebases legados</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Knowledge graph e visualização interativa</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Casos de uso reais</span></li>
+        </ul>
+        <span class="inline-flex items-center text-emerald-400 font-semibold text-sm">
+          Começar trilha →
+        </span>
+      </a>
+
+      <!-- Trilha 2 - Blue -->
+      <a href="trilha2/index.html" class="group bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 hover:border-blue-500/30 p-6 transition-all hover:bg-blue-500/10 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 2</span>
+          <span class="text-xs text-neutral-500">~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 group-hover:text-blue-400 transition-colors">⚙️ Técnico</h3>
+        <p class="text-neutral-300 text-sm mb-6 leading-relaxed flex-grow">
+          Por dentro da arquitetura: monorepo pnpm, packages core + dashboard, pipeline de agentes, tree-sitter WASM, schema do grafo e o plugin Claude/Cursor/Copilot.
+        </p>
+        <ul class="space-y-2 text-sm text-neutral-400 mb-6">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Monorepo, core e dashboard React</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Agentes do pipeline de análise</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span>Plugin multi-IDE e persistência</span></li>
+        </ul>
+        <span class="inline-flex items-center text-blue-400 font-semibold text-sm">
+          Começar trilha →
+        </span>
+      </a>
+
+      <!-- Trilha 3 - Purple -->
+      <a href="trilha3/index.html" class="group bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 hover:border-purple-500/30 p-6 transition-all hover:bg-purple-500/10 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRILHA 3</span>
+          <span class="text-xs text-neutral-500">~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition-colors">🚀 Avançado</h3>
+        <p class="text-neutral-300 text-sm mb-6 leading-relaxed flex-grow">
+          Customize tudo: extractors de novas linguagens, agentes próprios, <code class="text-purple-400">.understandignore</code>, business domain knowledge, redução de tokens, batching semântico e layout de grafos gigantes.
+        </p>
+        <ul class="space-y-2 text-sm text-neutral-400 mb-6">
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Extractors e agentes customizados</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Token reduction e semantic batching</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Layout escalável para grafos grandes</span></li>
+        </ul>
+        <span class="inline-flex items-center text-purple-400 font-semibold text-sm">
+          Começar trilha →
+        </span>
+      </a>
+
+    </div>
+
+    <!-- Box de instalação rápida -->
+    <section class="mt-16">
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-8">
+        <h3 class="text-xl font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">⚡</span> Quer testar antes?
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Instale o plugin no Claude Code, Cursor ou Copilot e rode <code class="px-2 py-1 bg-dark-800 rounded text-primary text-sm">/understand</code> em qualquer projeto. O dashboard abre automaticamente no navegador.
+        </p>
+        <a href="https://github.com/inematds/u-any" target="_blank" class="inline-flex items-center px-4 py-2 bg-primary/20 hover:bg-primary/30 border border-primary/40 text-primary rounded-lg font-semibold text-sm transition-colors">
+          Ver no GitHub →
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p class="mb-2">
+        Understand Anything — projeto open-source mantido por <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+      <p>
+        <a href="https://github.com/inematds/u-any" target="_blank" class="text-sky-400 hover:text-sky-300">github.com/inematds/u-any</a> • 2026
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      html.classList.remove('dark');
+      themeToggleDarkIcon.classList.remove('hidden');
+    } else {
+      html.classList.add('dark');
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

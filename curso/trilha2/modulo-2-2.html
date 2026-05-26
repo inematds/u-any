@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.2 - Pipeline de agentes e knowledge graph | Understand Anything</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .bg-blue-600 { background-color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500:hover { background-color: #3b82f6; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span><span class="font-bold text-lg hidden sm:inline">Understand Anything</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Técnico</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avançado</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span>/</span>
+      <span class="text-blue-400">Módulo 2.2</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.2</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🤖 O pipeline de agentes e o knowledge graph</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Cinco agentes especializados em sequência. JSON intermediário em disco. Schema validado. Um <strong class="text-blue-400">knowledge graph</strong> reprodutível
+        no fim. Vamos abrir o capô.
+      </p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">45</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermediário</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Pipeline</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔭 project-scanner: o agente que abre o trabalho</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Tudo começa com o <code class="text-blue-400">project-scanner</code>. Ele faz três coisas que ninguém quer fazer manualmente: <strong>enumera arquivos</strong>
+        respeitando <code>.gitignore</code>, <strong>detecta linguagens e frameworks</strong> pelo conjunto de extensões e arquivos-pista
+        (<code>pnpm-lock.yaml</code>, <code>requirements.txt</code>, <code>Cargo.toml</code>), e <strong>pré-resolve o importMap</strong> com tree-sitter.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Por que pré-resolver importMap?</h3>
+        <p class="text-neutral-300 mb-4">Sem isso, cada <code>file-analyzer</code> teria que parsear o arquivo de novo só pra responder "quem este arquivo importa?". Multiplicado por milhares de arquivos, vira hora de LLM.</p>
+        <p class="text-neutral-300">Com o importMap pronto, o agente recebe o trabalho mastigado: aqui está seu arquivo, aqui estão os imports já resolvidos pra caminhos absolutos. Só pensa no que importa: <em>o que esse código faz?</em></p>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">No comando <code>/understand src/frontend</code>, o scanner recebe um <strong>escopo</strong>. Em monorepos gigantes, isso evita rodar análise no repo inteiro quando você só mexe numa parte. Use sempre que possível.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Glob + ignore</h4><p class="text-xs text-neutral-400">Respeita .gitignore</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Language detect</h4><p class="text-xs text-neutral-400">Por extensão e pista</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">importMap</h4><p class="text-xs text-neutral-400">Pré-resolvido via tree-sitter</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Scope</h4><p class="text-xs text-neutral-400">Subdiretório opcional</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📂 file-analyzer: paralelismo é o segredo</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <code class="text-blue-400">file-analyzer</code> é o agente que mais aparece: rodam <strong>até 5 em paralelo</strong>, processando <strong>20-30 arquivos por batch</strong>.
+        Para cada arquivo, ele produz nós (function, class, file) e arestas (imports, calls, inheritance). É a fábrica.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Batch arrives</h4>
+            <p class="text-sm text-neutral-400 mb-3">20-30 arquivos por batch</p>
+            <p class="text-neutral-300 text-sm">O scanner entrega um lote já com importMap. O agente lê os arquivos da batch em uma única chamada — economia de round-trip.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Extract + describe</h4>
+            <p class="text-sm text-neutral-400 mb-3">Estrutura + semântica</p>
+            <p class="text-neutral-300 text-sm">Combina o output do tree-sitter (definições, calls) com a leitura LLM (resumo em inglês claro, tags, layer hint). Híbrido.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Write intermediate JSON</h4>
+            <p class="text-sm text-neutral-400 mb-3">Persistência fora do contexto</p>
+            <p class="text-neutral-300 text-sm">O resultado vai pra <code>.understand-anything/intermediate/&lt;hash&gt;.json</code>. <strong>Não volta pro contexto</strong> da conversa — é disco.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">4</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold mb-2">Fingerprint check</h4>
+            <p class="text-sm text-neutral-400 mb-3">Incremental updates</p>
+            <p class="text-neutral-300 text-sm">Antes de reanalisar, compara o hash do arquivo com o anterior. Igual = pula. Re-run incremental = só os arquivos que mudaram.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Tuning de paralelismo</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>5 paralelos × 25 arquivos</strong> — sweet spot atual</li>
+          <li><strong>Mais paralelos:</strong> rate-limit do provedor LLM bate antes do throughput melhorar</li>
+          <li><strong>Batch maior:</strong> contexto longo demais degrada qualidade do summary</li>
+          <li><strong>Batch menor:</strong> overhead de round-trip explode</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">5 paralelos</h4><p class="text-xs text-neutral-400">Default concurrency</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">20-30 / batch</h4><p class="text-xs text-neutral-400">Tamanho ótimo</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Fingerprint</h4><p class="text-xs text-neutral-400">Skip incremental</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Intermediate</h4><p class="text-xs text-neutral-400">Disco, fora do contexto</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🏛️ architecture-analyzer: pintar as camadas</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando o dashboard mostra o grafo colorido por camada arquitetural — <strong class="text-blue-400">API, Service, Data, UI, Utility</strong> — a etiqueta veio daqui. O agente lê todos os nós já produzidos e atribui uma camada por <em>heurística + julgamento LLM</em>.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Sinais fortes (heurística)</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Path com <code>/api/</code>, <code>/routes/</code>, <code>/controllers/</code> → API</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Suffix <code>Service.ts</code>, <code>UseCase.ts</code> → Service</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><code>/components/</code>, <code>.tsx</code>, JSX → UI</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><code>/db/</code>, <code>/models/</code>, <code>Repository.ts</code> → Data</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Quando heurística falha</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Codebase sem convenção (pastas <code>src/foo/</code>, <code>src/bar/</code>)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Arquivo "utilitário" que na verdade orquestra negócio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Hybrid frameworks (Next.js: app/, pages/, lib/)</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Cada nó recebe um <code>confidence</code> score. No dashboard, nós com baixa confiança aparecem com borda tracejada. Bom indicador de onde a arquitetura está ambígua — vale revisar.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">5 camadas</h4><p class="text-xs text-neutral-400">API, Service, Data, UI, Util</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Heurística first</h4><p class="text-xs text-neutral-400">LLM como tie-breaker</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Confidence</h4><p class="text-xs text-neutral-400">Visualizado no grafo</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Fallback</h4><p class="text-xs text-neutral-400">"unclassified" se nada bate</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🧭 tour-builder: ensinar, não só mostrar</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <code class="text-blue-400">tour-builder</code> transforma o grafo em uma <strong>sequência didática</strong>. Ordenação topológica + narrativa LLM = "comece pelo <code>main.ts</code>, depois <code>config/</code>, depois <code>auth.ts</code>...". É o diferencial: ferramentas burras só mostram. Esta ensina.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Anatomia de um tour</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>id, title, persona</strong> — para quem é o tour</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>stops[]</strong> — array ordenado de <code>{nodeId, narration}</code></span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>order rationale</strong> — por que essa sequência</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>estimated minutes</strong> — quanto tempo o tour leva</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-3 font-mono text-blue-400">tours[] no JSON (exemplo)</h3>
+        <pre class="font-mono text-sm text-neutral-300 overflow-x-auto"><code>{
+  "id": "auth-flow",
+  "title": "Como funciona o login",
+  "persona": "junior-dev",
+  "estimatedMinutes": 8,
+  "stops": [
+    { "nodeId": "f_routes_auth", "narration": "Entrada da requisição..." },
+    { "nodeId": "f_authService", "narration": "Aqui validamos a senha..." },
+    { "nodeId": "f_jwtIssue",    "narration": "E aqui emitimos o token..." }
+  ]
+}</code></pre>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Topological order</h4><p class="text-xs text-neutral-400">Dependência primeiro</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Narrative</h4><p class="text-xs text-neutral-400">Voz LLM consistente</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Persona-aware</h4><p class="text-xs text-neutral-400">Tour diferente por nível</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Stops anchored</h4><p class="text-xs text-neutral-400">Referência a nodeId</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔍 graph-reviewer: a última linha de defesa</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <code class="text-blue-400">graph-reviewer</code> roda no fim. Função única: garantir que o grafo é <strong>internamente consistente</strong>. Aresta apontando pra nó que não existe? Tour com stop quebrado? Layer fora da taxonomy? Erro antes de persistir — o usuário não vai descobrir num banner vermelho no dashboard.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">🚨</span> O que ele verifica</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Referential integrity:</strong> toda aresta tem source/target válidos</li>
+          <li><strong>Tour stops:</strong> todos os <code>nodeId</code> referenciados existem</li>
+          <li><strong>Layer taxonomy:</strong> camadas dentro do conjunto permitido</li>
+          <li><strong>Required fields:</strong> nenhum nó sem <code>id</code>, <code>kind</code>, <code>label</code></li>
+          <li><strong>Cycle warnings:</strong> ciclos detectados quando não deveriam existir</li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Dois modos</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Inline (default):</strong> só validações estruturais determinísticas — rápido, barato</li>
+          <li><strong>Full LLM review (<code>--review</code>):</strong> agente lê o grafo e questiona <em>"esse nó faz sentido?"</em>, <em>"essa camada parece certa?"</em> — caro, mas pega problemas semânticos</li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Use <code>--review</code> antes de commitar um grafo pro time. Adiciona ~1 minuto, mas evita "o dashboard tá esquisito" virar issue.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Inline check</h4><p class="text-xs text-neutral-400">Estrutural, sempre</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">--review</h4><p class="text-xs text-neutral-400">LLM completo</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Fail fast</h4><p class="text-xs text-neutral-400">Antes de persistir</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Schema reuse</h4><p class="text-xs text-neutral-400">Mesmo do dashboard</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">💾 .understand-anything/: o disco onde tudo mora</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Esse diretório (criado no projeto-alvo, não no Understand Anything) é onde o pipeline grava tudo. Saber o que <strong>commitar</strong> e o que <strong>ignorar</strong> faz diferença entre PR limpo e PR com 40 MB de JSON sem motivo.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-3 font-mono text-blue-400">Estrutura</h3>
+        <pre class="font-mono text-sm text-neutral-300 overflow-x-auto"><code>.understand-anything/
+├── knowledge-graph.json    # Output canônico — COMMITAR
+├── domain-graph.json       # /understand-domain — COMMITAR
+├── intermediate/           # Scratch dos agentes — IGNORAR
+│   └── &lt;hash&gt;.json
+├── diff-overlay.json       # Local, para /understand-diff — IGNORAR
+└── tours.json              # Walkthroughs — COMMITAR</code></pre>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Commitar</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><code>knowledge-graph.json</code> — onboarding instantâneo pro time</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><code>tours.json</code> — walkthroughs versionados</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><code>domain-graph.json</code> — visão de negócio para PMs</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Ignorar (.gitignore)</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm font-mono">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>.understand-anything/intermediate/</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>.understand-anything/diff-overlay.json</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300">Grafo &gt; 10 MB? Use <strong>git-lfs</strong>: <code>git lfs track ".understand-anything/*.json"</code>. Evita inflar o histórico do repo.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Canônico</h4><p class="text-xs text-neutral-400">knowledge-graph.json</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Scratch</h4><p class="text-xs text-neutral-400">intermediate/ é local</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">Auto-update</h4><p class="text-xs text-neutral-400">Hook post-commit incremental</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-semibold text-blue-400 mb-1">git-lfs</h4><p class="text-xs text-neutral-400">Para grafos grandes</p></div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📋</span> Resumo do Módulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Scanner abre o trabalho</strong><span class="text-neutral-400"> — enumera, detecta, pré-resolve importMap.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">File-analyzers em paralelo</strong><span class="text-neutral-400"> — 5×25, fingerprint pra incremental.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Architecture-analyzer pinta camadas</strong><span class="text-neutral-400"> — heurística + LLM, com confidence.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Tour-builder ensina</strong><span class="text-neutral-400"> — topological order, narrativa, persona.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Graph-reviewer protege</strong><span class="text-neutral-400"> — inline sempre, <code>--review</code> antes de commitar.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">.understand-anything/ tem regras</strong><span class="text-neutral-400"> — commit grafo, ignore intermediate.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">2.3 — O dashboard: React Flow, Zustand, sidebar e code viewer</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-2-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo Anterior</a>
+          <a href="modulo-2-3.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Próximo Módulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Understand Anything — 2026 · <a href="https://github.com/inematds/u-any" target="_blank" class="text-sky-400 hover:text-sky-300">github.com/inematds/u-any</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') { themeToggleDarkIcon.classList.remove('hidden'); html.classList.remove('dark'); }
+    else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

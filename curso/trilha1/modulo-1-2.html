@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.2 — Knowledge graph e dashboard | Understand Anything</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185, 28, 28, 0.06); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185, 28, 28, 0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🔎</span>
+            <span class="font-bold text-lg hidden sm:inline">Understand Anything</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Pipeline &amp; Agentes</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Customização</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../index.html" class="hover:text-emerald-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Módulo 1.2</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.2</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🕸️ Knowledge graph e o dashboard interativo</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">O artefato central do Understand Anything: como nós e arestas formam um grafo persistente em <code class="text-emerald-400">.understand-anything/</code>, e como o dashboard React mostra tudo numa tela 75% grafo + 360px sidebar.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">7</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">55</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Básico</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Concepts</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <h2 class="text-2xl font-bold mb-6">Conteúdo detalhado</h2>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🧱 Nó: o átomo do grafo</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Tudo no Understand Anything começa num <strong class="text-emerald-400">nó</strong>. Um nó é uma unidade do código — arquivo, função, classe, ou conceito de domínio. Cada nó carrega metadados extraídos pelo tree-sitter (símbolos, path, layer) e um sumário gerado por LLM.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🔬</span> Anatomia de um nó</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
+          <div>{</div>
+          <div>&nbsp;&nbsp;"id": "file:src/auth/login.ts",</div>
+          <div>&nbsp;&nbsp;"type": "file",</div>
+          <div>&nbsp;&nbsp;"layer": "Service",</div>
+          <div>&nbsp;&nbsp;"path": "src/auth/login.ts",</div>
+          <div>&nbsp;&nbsp;"symbols": ["loginUser", "validateToken"],</div>
+          <div>&nbsp;&nbsp;"summary": "Handles user login and JWT validation."</div>
+          <div>}</div>
+        </div>
+        <p class="text-neutral-400 text-sm mt-4">O <code>id</code> é único e estável; o <code>type</code> classifica; o <code>layer</code> alimenta a layer view; o <code>summary</code> é o que aparece na sidebar.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">file</h4><p class="text-sm text-neutral-400">Arquivo do repositório</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">function</h4><p class="text-sm text-neutral-400">Função / método isolado</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">class</h4><p class="text-sm text-neutral-400">Classe / interface</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">domain</h4><p class="text-sm text-neutral-400">Conceito de negócio</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔗 Aresta: relacionamento entre nós</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Se o nó é o substantivo, a aresta é o <strong class="text-emerald-400">verbo</strong>: "importa", "chama", "estende", "compõe", "depende de". É na aresta que mora a história do codebase.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">Tipos de aresta no Understand Anything</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
+          <div>imports&nbsp;&nbsp;&nbsp;&nbsp;A → B   // A faz `import B`</div>
+          <div>calls&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A → B   // A chama função/método de B</div>
+          <div>extends&nbsp;&nbsp;&nbsp;&nbsp;A → B   // A herda de B</div>
+          <div>implements A → B   // A implementa interface B</div>
+          <div>contains&nbsp;&nbsp;&nbsp;A → B   // arquivo contém função</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que uma aresta diz</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Esse arquivo importa esse aqui."</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Essa função é chamada nesses 12 lugares."</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Mudar essa classe afeta toda essa subárvore."</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Esse módulo tem zero fan-in — talvez seja morto."</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que uma aresta NÃO diz</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Quem está certo no design."</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Por que essa decisão foi tomada."</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Se essa dependência é boa ou ruim."</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"O que vai quebrar se você mudar (com 100% certeza)."</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Métricas que vivem nas arestas</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>fan-in</strong> — quantos nós apontam para esse nó (quem depende de mim).</li>
+          <li><strong>fan-out</strong> — quantos nós esse nó referencia (de quem eu dependo).</li>
+          <li><strong>centralidade</strong> — quão crítico no grafo (intermediário em caminhos).</li>
+          <li><strong>ciclos</strong> — dependências circulares que pedem refactor.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">💾 Persistência em <code>.understand-anything/</code></h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Diferente de chatbots que esquecem tudo, o Understand Anything <strong class="text-emerald-400">grava em disco</strong>. O grafo vira um JSON dentro da raiz do projeto.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📁</span> Estrutura de pastas</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
+          <div>seu-projeto/</div>
+          <div>├── src/</div>
+          <div>├── package.json</div>
+          <div>└── .understand-anything/</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;├── knowledge-graph.json&nbsp;&nbsp;<span class="text-neutral-500"># grafo final</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;├── intermediate/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-neutral-500"># resultados dos agents</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── scan.json</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── files.json</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── architecture.json</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;└── tours.json&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-neutral-500"># tours guiados</span></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
+        <p class="text-neutral-300 mb-2">Adicione <code>.understand-anything/intermediate/</code> ao <code>.gitignore</code>. Mas <strong>versione</strong> o <code>knowledge-graph.json</code> se o time todo usa o dashboard — fica como artefato de documentação que regenera junto com o repo.</p>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🛡️</span> Schema validation no load</h3>
+        <p class="text-neutral-300 mb-2">Quando o dashboard carrega o JSON, ele valida contra um schema (Zod). Se o grafo está corrompido ou desatualizado, aparece um banner de erro em cima — não quebra a UI silenciosamente.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🖼️ Layout do dashboard</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Decisão de design clara: <strong class="text-emerald-400">grafo é o protagonista</strong>. Nada de ChatPanel ocupando metade da tela; nada de editor Monaco. 75% grafo, 360px sidebar à direita, fim de papo.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🎨</span> Tema dark luxury</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Fundo preto profundo <code>#0a0a0a</code> — alto contraste com nós.</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Acentos gold/amber <code>#d4a574</code> — destaque de seleção e CTAs.</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Tipografia DM Serif Display em títulos — sensação "biblioteca" e não "IDE".</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Inter no body — leitura de listas e summaries longos.</span></li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">React Flow</h4><p class="text-sm text-neutral-400">Render do grafo</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Zustand</h4><p class="text-sm text-neutral-400">Estado global enxuto</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">Tailwind v4</h4><p class="text-sm text-neutral-400">Estilo + dark luxury</p></div>
+        <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><h4 class="font-bold text-emerald-400 mb-1">TypeScript</h4><p class="text-sm text-neutral-400">Strict mode em tudo</p></div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">📑 Sidebar: as abas Info e Files</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A coluna direita de 360px tem duas abas. Toda a informação textual passa por ali — e o conteúdo muda conforme você seleciona um nó ou troca de persona.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">A</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Aba "Info" — três estados</h4>
+            <p class="text-sm text-neutral-400 mb-3">Default → seleção → persona</p>
+            <ul class="space-y-2 text-neutral-300 text-sm">
+              <li><strong class="text-emerald-400">ProjectOverview</strong> — quando nada está selecionado: stats do repo, layers, top nós.</li>
+              <li><strong class="text-emerald-400">NodeInfo</strong> — ao clicar num nó: sumário, símbolos, vizinhos, tipo.</li>
+              <li><strong class="text-emerald-400">LearnPanel</strong> — quando a persona Learn está ativa: passos do tour atual.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">B</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Aba "Files" — árvore derivada</h4>
+            <p class="text-sm text-neutral-400 mb-3">FileExplorer</p>
+            <p class="text-neutral-300 text-sm">A árvore <strong>não vem do filesystem</strong> diretamente — é construída a partir do grafo estrutural. Resultado: você só vê o que está representado como nó, e clicar dali centraliza o grafo no item.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Detalhe que importa</h3>
+        <p class="text-neutral-300">Como a árvore vem do grafo (e não do disco), arquivos ignorados pelo scanner (node_modules, build, etc.) simplesmente não aparecem. Sem ruído.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">📜 Code viewer e full-screen</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Clicar num nó de arquivo abre um <strong class="text-emerald-400">code viewer</strong> que sobe pela base. Botão expand promove para modal full-screen. O syntax highlight é feito por <code>prism-react-renderer</code>.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🔐</span> Segurança do conteúdo</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
+          <div>GET /file-content.json?path=src/auth/login.ts</div>
+          <div>Authorization: Bearer &lt;dev-server-token&gt;</div>
+          <div>&nbsp;</div>
+          <div>// dev server valida:</div>
+          <div>// 1. token presente e válido</div>
+          <div>// 2. path está na allowlist derivada do grafo</div>
+        </div>
+        <p class="text-neutral-400 text-sm mt-4">A allowlist garante que mesmo com o token você não consegue ler arquivos fora do grafo (ex: <code>.env</code>).</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Vantagens</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Ler código sem sair do grafo.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Syntax highlight em ~30 linguagens.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Modal expandido para inspeção profunda.</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Não é IDE</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem edição inline.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem refactor automático.</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem terminal / debugger.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 7 -->
+    <section id="topico-7" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">7</span>
+        <h2 class="text-2xl font-bold">🧭 Navegação visual e tours guiados</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Pan, zoom, search, clique — o usuário navega o grafo como um mapa. Mas o diferencial está nos <strong class="text-emerald-400">tours guiados</strong>: roteiros gerados automaticamente que mostram nós em ordem de dependência.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Entry points</h4>
+            <p class="text-sm text-neutral-400 mb-3">Onde a aplicação começa</p>
+            <p class="text-neutral-300 text-sm">O tour começa pelos arquivos de entrada (main, index, app) — não pelo arquivo aleatório que o "Find file" abriu.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Core layers</h4>
+            <p class="text-sm text-neutral-400 mb-3">Service, Data, UI, Utility</p>
+            <p class="text-neutral-300 text-sm">Em seguida, o tour percorre as camadas arquiteturais — você entende a divisão antes de mergulhar.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Hot spots</h4>
+            <p class="text-sm text-neutral-400 mb-3">Nós com alta centralidade</p>
+            <p class="text-neutral-300 text-sm">Por último, o tour destaca os nós mais "puxados" — esses você precisa ler com calma.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🔍</span> Dois tipos de busca</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Fuzzy</strong> — por nome de símbolo (rápido, exato).</li>
+          <li><strong>Semantic</strong> — por significado ("onde tem auth?") — embedding por trás.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">✅</span> Resumo do Módulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Nó é a unidade</strong><span class="text-neutral-400"> — arquivo, função, classe, conceito.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Aresta carrega a história</strong><span class="text-neutral-400"> — imports, calls, extends.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Persistência local</strong><span class="text-neutral-400"> — JSON em <code>.understand-anything/</code>.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Layout grafo-first</strong><span class="text-neutral-400"> — 75% canvas + 360px sidebar.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Sidebar reativa</strong><span class="text-neutral-400"> — Info muda conforme seleção/persona; Files vem do grafo.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Code viewer com sandbox</strong><span class="text-neutral-400"> — token + allowlist evitam leitura indevida.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Tours por dependência</strong><span class="text-neutral-400"> — leitura na ordem certa.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">1.3 — Fluxo de uso: do /understand ao dashboard e casos reais</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Módulo Anterior</a>
+          <a href="modulo-1-3.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Próximo Módulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Understand Anything — <a href="https://github.com/inematds/u-any" target="_blank" class="text-sky-400 hover:text-sky-300">github.com/inematds/u-any</a> · INEMA.CLUB 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
